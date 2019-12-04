@@ -1,0 +1,22 @@
+#!/usr/bin/env python3
+
+teams = {
+    "a" : {
+	    "name"     : "a",
+	    "location" : "Location a",
+	    "member"   : ["memberA"],
+	    "problems" : [-1]
+    },
+    "b" : {
+	    "name"     : "b",
+	    "location" : "Location b",
+	    "member"   : ["memberB"],
+	    "problems" : [-1]
+    },
+    "c" : {
+	    "name"     : "c",
+	    "location" : "Location c",
+	    "member"   : ["memberC"],
+	    "problems" : [-1]
+    }
+}

@@ -1,0 +1,5 @@
+#!/usr/bin/env python3
+
+problems = {
+    -1 : "Set Problem in result please"
+}

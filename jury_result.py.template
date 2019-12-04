@@ -1,0 +1,83 @@
+#!/usr/bin/env python3
+
+juror_result_fights = [
+    { # first fight
+        "team_order" : ["a", "b", "c"],
+        "rounds" : [
+            [ # round 1
+                # order: reporter, opponent, reviewer
+                [0, 0, 0], # juror 1
+                [1, 0, 0], # juror 2
+                [0, 2, 0], # 3
+                [0, 0, 0]  # etc
+            ],
+            [ # round 2
+                # order: reporter, opponent, reviewer
+                [0, 0, 0],
+                [0, 0, 0],
+                [0, 0, 0],
+                [0, 0, 0]
+            ],
+            [ # round 3
+                # order: reporter, opponent, reviewer
+                [0, 0, 0],
+                [0, 0, 0],
+                [0, 0, 0],
+                [0, 0, 0]
+            ]
+        ]
+    },
+    { # second fight
+        "team_order" : ["b", "c", "a"],
+        "rounds" : [
+            [ # round 1
+                # order: reporter, opponent, reviewer
+                [0, 0, 0],
+                [0, 0, 0],
+                [0, 0, 0],
+                [0, 0, 0]
+            ],
+            [ # round 2
+                # order: reporter, opponent, reviewer
+                [0, 0, 0],
+                [0, 0, 0],
+                [0, 0, 0],
+                [0, 0, 0]
+            ],
+            [ # round 3
+                # order: reporter, opponent, reviewer
+                [0, 0, 0],
+                [0, 0, 0],
+                [0, 0, 0],
+                [0, 0, 0]
+            ]
+        ]
+    }
+]
+
+juror_result_finale = {
+    "team_order" : ["c", "a", "b"],
+    "rounds" : [
+            [ # round 1
+                # order: reporter, opponent, reviewer
+                [0, 0, 0],
+                [0, 0, 0],
+                [0, 0, 0],
+                [0, 0, 0]
+            ],
+            [ # round 2
+                # order: reporter, opponent, reviewer
+                [0, 0, 0],
+                [0, 0, 0],
+                [0, 0, 0],
+                [0, 0, 0]
+            ],
+            [ # round 3
+                # order: reporter, opponent, reviewer
+                [0, 0, 0],
+                [0, 0, 0],
+                [0, 0, 0],
+                [0, 0, 0]
+            ]
+        ]
+}
