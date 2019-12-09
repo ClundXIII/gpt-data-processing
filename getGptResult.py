@@ -151,14 +151,14 @@ for f in range(0, fight_number):
 
         print("    opponent team: " + opponent_team["name"])
         opponent_grade = getGrade(opponent_data, jury_amount)
-        print("      grade: " + str(reporter_grade))
-        print("      adding grade x2: " + str(reporter_grade*2))
+        print("      grade: " + str(opponent_grade))
+        print("      adding grade x2: " + str(opponent_grade*2))
         this_fight["score"][opponent_team_short] += opponent_grade*2
 
         print("    reviewer team: " + reviewer_team["name"])
         reviewer_grade = getGrade(reviewer_data, jury_amount)
-        print("      grade: " + str(reporter_grade))
-        print("      adding grade x1: " + str(reporter_grade*1))
+        print("      grade: " + str(reviewer_grade))
+        print("      adding grade x1: " + str(reviewer_grade*1))
         this_fight["score"][reviewer_team_short] += reviewer_grade*1
 
         this_round = {
@@ -230,24 +230,24 @@ for f in range(0, fight_number):
 
     if len(bonus_points_first["name"]) == 1:
         print("  Best Team this round " + bonus_points_first["name"][0] + " receives 2 bonus points because of " + str(bonus_points_first["points"]))
-        fights_result["team_result"][bonus_points_first["name"][0]]["score"] += 2.0
-        fights_result["team_result"][bonus_points_first["name"][0]]["bonus"] += 2.0
+        fights_result["team_result"][bonus_points_first["name"][0]]["score"] += 100*2.0
+        fights_result["team_result"][bonus_points_first["name"][0]]["bonus"] += 100*2.0
         this_fight["bonus"][bonus_points_first["name"][0]] += 2.0
         this_fight["score"][bonus_points_first["name"][0]] += 2.0
 
         second_places_count = len(bonus_points_second["name"])
         for second_place_team in bonus_points_second["name"]:
             print("  Second best Team this round " + second_place_team + " receives " + str(1/second_places_count) + " bonus point because of " + str(bonus_points_second["points"]))
-            fights_result["team_result"][second_place_team]["score"] += 1/second_places_count
-            fights_result["team_result"][second_place_team]["bonus"] += 1/second_places_count
+            fights_result["team_result"][second_place_team]["score"] += 100*1/second_places_count
+            fights_result["team_result"][second_place_team]["bonus"] += 100*1/second_places_count
             this_fight["bonus"][second_place_team] += 1/second_places_count
             this_fight["score"][second_place_team] += 1/second_places_count
     else:
         first_places_count = len(bonus_points_first["name"])
         for score_team in bonus_points_first["name"]:
             print("  Best Team this round " + score_team + " receives " + str(3/first_places_count) + " bonus points because of " + str(bonus_points_first["points"]))
-            fights_result["team_result"][score_team]["score"] += 3/first_places_count
-            fights_result["team_result"][score_team]["bonus"] += 3/first_places_count
+            fights_result["team_result"][score_team]["score"] += 100*3/first_places_count
+            fights_result["team_result"][score_team]["bonus"] += 100*3/first_places_count
             this_fight["bonus"][score_team] += 3/first_places_count
             this_fight["score"][score_team] += 3/first_places_count
 
@@ -259,9 +259,116 @@ pp.pprint(fights_result)
 print()
 print()
 
+finale_result = {
+    "rounds" : [
+    ],
+    "team_result" : {}
+}
+
+team_shortnames = list(teams.keys())
+for i in range(0, len(team_shortnames)):
+    finale_result["team_result"].update({
+        (team_shortnames[i]) : {
+            "score" : 0
+        }})
+
+#if do_finale:
+
+final_fight = {
+    "rounds" : [],
+    "score"  : {
+        this_round_team_short[0] : 0,
+        this_round_team_short[1] : 0,
+        this_round_team_short[2] : 0
+    },
+    "bonus"  : {
+        this_round_team_short[0] : 0,
+        this_round_team_short[1] : 0,
+        this_round_team_short[2] : 0
+    }
+}
+
+final_fight["score"]["pms"] += 2
+final_fight["bonus"]["pms"] += 2
+
+final_fight["score"]["faultiere"] += 1
+final_fight["bonus"]["faultiere"] += 1
+
 if do_finale:
     # do finale
     print("Calculating Bonus points for finale")
+
+    print("final fight")
+    print("  team order:      1st round 2nd round 3rd round")
+
+    teamA = teams[juror_result_finale["team_order"][0]]
+    teamB = teams[juror_result_finale["team_order"][1]]
+    teamC = teams[juror_result_finale["team_order"][2]]
+
+    this_round_teams = [teamA, teamB, teamC]
+    this_round_team_short = [
+        juror_result_finale["team_order"][0],
+        juror_result_finale["team_order"][1],
+        juror_result_finale["team_order"][2]
+    ]
+
+    print("    A: " + ("{: >" + str(longest_teamname_len) + "}").format(teamA["name"]) + " : " + team_order_placements[0][0] + " " + team_order_placements[0][1] + " " + team_order_placements[0][2])
+    print("    B: " + ("{: >" + str(longest_teamname_len) + "}").format(teamB["name"]) + " : " + team_order_placements[1][0] + " " + team_order_placements[1][1] + " " + team_order_placements[1][2])
+    print("    C: " + ("{: >" + str(longest_teamname_len) + "}").format(teamC["name"]) + " : " + team_order_placements[2][0] + " " + team_order_placements[2][1] + " " + team_order_placements[2][2])
+
+    for r in range(0, 3):
+        print("  processing round #" + str(r+1))
+
+        jury_amount = 5
+
+        jury_data_rep = sorted(get_column(juror_result_finale["rounds"][r], 0))
+        jury_data_opp = sorted(get_column(juror_result_finale["rounds"][r], 1))
+        jury_data_rev = sorted(get_column(juror_result_finale["rounds"][r], 2))
+
+        reporter_team = this_round_teams[team_order_placement_position[r]["reporter"]]
+        opponent_team = this_round_teams[team_order_placement_position[r]["opponent"]]
+        reviewer_team = this_round_teams[team_order_placement_position[r]["reviewer"]]
+
+        reporter_team_short = this_round_team_short[team_order_placement_position[r]["reporter"]]
+        opponent_team_short = this_round_team_short[team_order_placement_position[r]["opponent"]]
+        reviewer_team_short = this_round_team_short[team_order_placement_position[r]["reviewer"]]
+
+        print("    reporter team: " + reporter_team["name"])
+        reporter_grade = getGrade(jury_data_rep, jury_amount)
+        print("      grade: " + str(reporter_grade))
+        print("      adding grade x3: " + str(reporter_grade*3))
+        final_fight["score"][reporter_team_short] += reporter_grade*3
+
+        print("    opponent team: " + opponent_team["name"])
+        opponent_grade = getGrade(jury_data_opp, jury_amount)
+        print("      grade: " + str(opponent_grade))
+        print("      adding grade x2: " + str(opponent_grade*2))
+        final_fight["score"][opponent_team_short] += opponent_grade*2
+
+        print("    reviewer team: " + reviewer_team["name"])
+        reviewer_grade = getGrade(jury_data_rev, jury_amount)
+        print("      grade: " + str(reviewer_grade))
+        print("      adding grade x1: " + str(reviewer_grade*1))
+        final_fight["score"][reviewer_team_short] += reviewer_grade*1
+
+        this_round = {
+            "reporter" : {
+                "team"    : reporter_team_short,
+                "grade"   : reporter_grade
+            },
+            "opponent" : {
+                "team"    : opponent_team_short,
+                "grade"   : opponent_grade
+            },
+            "reviewer" : {
+                "team"    : reviewer_team_short,
+                "grade"   : reviewer_grade
+            }
+        }
+        final_fight["rounds"].append(this_round)
+
+    pp.pprint(final_fight)
+
 
 print("<h1>GPT Results</h1>")
 
@@ -290,3 +397,28 @@ for f in range(0, fight_number):
             print(" (including " + str(fights_result["single_fights"][f]["bonus"][t]) + " bonus points)")
         print("<br/>")
 
+
+if do_finale:
+    print("<h2>Final</h2>")
+    print("<table><tr><th>Round</th><th>Problem</th><th>Role</th><th>Team</th><th>Grade</th></tr>")
+
+    problems = ["Final Problem 1", "Final Problem 2", "Final Problem 3"]
+
+    this_fight_rounds = final_fight["rounds"]
+
+    for r in range(0, len(this_fight_rounds)):
+        this_r = this_fight_rounds[r]
+        print("<tr><td>" + str(r+1) + "</td><td>" + problems[r] + "</td><td>Reporter</td><td>" + teams[this_r["reporter"]["team"]]["name"] + "</td><td>" + str(round(this_r["reporter"]["grade"]*100)/100) + "</td></tr>")
+        print("<tr><td></td><td></td><td>Opponent</td><td>" + teams[this_r["opponent"]["team"]]["name"] + "</td><td>" + str(round(this_r["opponent"]["grade"]*100)/100) + "</td></tr>")
+        print("<tr><td></td><td></td><td>Reviewer</td><td>" + teams[this_r["reviewer"]["team"]]["name"] + "</td><td>" + str(round(this_r["reviewer"]["grade"]*100)/100) + "</td></tr>")
+
+
+    print("</table>")
+    print("<br/>")
+    print("<h3>Final Result: </h3>")
+    thisFightTeams = list(final_fight["score"].keys())
+    for t in thisFightTeams:
+        print("<b>" + teams[t]["name"] + "</b> : " + str(final_fight["score"][t]))
+        if final_fight["bonus"][t] > 0:
+            print(" (including " + str(final_fight["bonus"][t]) + " bonus points)")
+        print("<br/>")

@@ -50,25 +50,6 @@ chair_result_fights = [
 ]
 
 chair_result_finale = {
-    "team_order" : ["c", "b", "a"],
-    "rounds" : [
-        { # first round
-            "problem"  : -1,
-            "reporter" : [0, 0, 0, 0],
-            "opponent" : [0, 0, 0, 0],
-            "reviewer" : [0, 0, 0, 0]
-        },
-        { # second round
-            "problem"  : -1,
-            "reporter" : [0, 0, 0, 0],
-            "opponent" : [0, 0, 0, 0],
-            "reviewer" : [0, 0, 0, 0]
-        },
-        { # third round
-            "problem"  : -1,
-            "reporter" : [0, 0, 0, 0],
-            "opponent" : [0, 0, 0, 0],
-            "reviewer" : [0, 0, 0, 0]
-        }
-    ]
+    # finale has no public grading, only order is written down by chair
+    "team_order" : ["c", "b", "a"]
 }
